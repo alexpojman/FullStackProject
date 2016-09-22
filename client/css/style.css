@@ -15,17 +15,18 @@ body {
   font-size:1rem;
 }
 
-button {
-  background:#5FD1AC;
+.submit-button {
+  background:#26DEBD;
   border:0;
   color: #eee;
   cursor:pointer;
   font-family:'Proxima-Nova';
-  font-size:1rem;
+  font-size:16px;
   padding:.5rem;
-  width: 20%;
+  width: 100%;
   height: 40px;
 }
+
 button:active {
   background:#ddd;
 }
@@ -76,14 +77,14 @@ input {
   text-align: center;
 }
 
-.container-login input, button {
+.container-login input button {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
 
 .text-field label {
-  font-size: 12px;
+  font-size: 14px;
   margin-bottom: 8px;
 }
 
@@ -112,10 +113,6 @@ input {
   margin-bottom: 8%;
 }
 
-.date-field {
-  
-}
-
 .container h1 {
   text-align: center;
 }
@@ -124,6 +121,48 @@ input {
   padding-left: 12%;
   padding-right: 12%;
 }
+
+.cal-input {
+  text-align: center;
+  border: none;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  cursor:pointer;
+  height: 50%;
+}
+
+.cal-button-open {
+  border: 1px solid #26DEBD;
+  border-radius: 0 !important;
+  background: transparent !important;
+  width: 100%;
+}
+
+.cal-button-open :hover {
+  background: #fff;
+}
+
+.cal-button-open i {
+  padding: 1px;
+}
+
+.cal-button-container {
+  height: 50%;
+}
+
+.order-info-container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.gm-style {
+  
+}
+
 
 
 

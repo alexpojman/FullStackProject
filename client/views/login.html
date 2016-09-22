@@ -4,14 +4,14 @@
     <form ng-submit="login()">
       <div class="text-field">
         <label>Email</label>
-        <input type="text" ng-model="user.email">
+        <input type="text" ng-model="user.email" ng-required="true">
       </div>
       <div class="text-field">
         <label >Password</label>
-        <input type="password" ng-model="user.password" autocomplete="new-password">
+        <input type="password" ng-model="user.password" autocomplete="new-password" ng-required="true">
       </div>
-      <div class="form-button">
-        <button>Log in</button>
+      <div>
+        <button class="submit-button">Log in</button>
       </div>
     </form>
     <p>Don't have an account? <br><a ui-sref="register" ui-sref-active="active">Click here to register!</a></p>

@@ -6,26 +6,20 @@
 angular
   .module('app')
   .controller('AuthLoginController', ['$scope', 'AuthService', '$state',
-      function($scope, AuthService, $state) {
-    $scope.user = {
-      email: '',
-      password: '',
-    };
-
-    $scope.login = function() {
-      AuthService.login($scope.user.email, $scope.user.password)
-      .then(function() {
-        $state.go('current-order');
-      });
-    };
-  }])
-  .controller('AuthLogoutController', ['$scope', 'AuthService', '$state',
     function($scope, AuthService, $state) {
-      AuthService.logout()
-      .then(function() {
-        $state.go('all-reviews');
-      });
-  }])
+      $scope.user = {
+        email: '',
+        password: '',
+      };
+
+      $scope.login = function() {
+        AuthService.login($scope.user.email, $scope.user.password)
+        .then(function() {
+          $state.go('current-order');
+        });
+      };
+    }])
+
 
   .controller('RegisterController', ['$scope', 'AuthService', 'Order', '$state',
     function($scope, AuthService, Order, $state) {
@@ -59,26 +53,139 @@ angular
         .then(function() {
           AuthService.login($scope.user.email, $scope.user.password)
           .then(function() {
-            Order.create({ date: "05-04-2007" }).$promise.then(function(response) { $state.go('current-order'); });
+            Order.create({ date: $scope.dt }).$promise.then(function(response) { $state.go('current-order'); });
           });
         });
       };
 
+      //
+      // Date Picker Functions
+      //
+      $scope.today = function() {
+        $scope.dt = new Date();
+      };
+      $scope.today();
+
+      $scope.clear = function() {
+        $scope.dt = null;
+      };
+
+      $scope.inlineOptions = {
+        customClass: getDayClass,
+        minDate: new Date(),
+        showWeeks: true
+      };
+
+      $scope.dateOptions = {
+        formatYear: 'yy',
+        maxDate: new Date(2020, 5, 22),
+        minDate: new Date(),
+        startingDay: 1
+      };
+
+      $scope.toggleMin = function() {
+        $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
+        $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
+      };
+
+      $scope.toggleMin();
+
+      $scope.openCal = function() {
+        $scope.popupCal.opened = true;
+      };
+
+      $scope.setDate = function(year, month, day) {
+        $scope.dt = new Date(year, month, day);
+      };
+
+      $scope.format = 'MM/dd/yyyy';
+      $scope.altInputFormats = ['M!/d!/yyyy'];
+
+      $scope.popupCal = {
+        opened: false
+      };
+
+      var tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+
+      var afterTomorrow = new Date();
+      afterTomorrow.setDate(tomorrow.getDate() + 1);
+
+      $scope.events = [
+        {
+          date: tomorrow,
+          status: 'full'
+        },
+        {
+          date: afterTomorrow,
+          status: 'partially'
+        }
+      ];
+
+      function getDayClass(data) {
+        var date = data.date,
+          mode = data.mode;
+        if (mode === 'day') {
+          var dayToCheck = new Date(date).setHours(0,0,0,0);
+
+          for (var i = 0; i < $scope.events.length; i++) {
+            var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
+
+            if (dayToCheck === currentDay) {
+              return $scope.events[i].status;
+            }
+          }
+        }
+
+        return '';
+      }
+
   }])
 
-  .controller('CurrentOrderController', ['$scope', 'AuthService', 'Order', '$state',
-      function($scope, AuthService, Order, $state) {
-    $scope.user = {
-      email: '',
-      password: ''
-    };
+  .controller('CurrentOrderController', ['$scope', 'AuthService', 'Order', '$state', 'NgMap',
+    function($scope, AuthService, Order, $state, NgMap) {
+      $scope.customer = AuthService.getCurrentCustomer();
+      $scope.order = {};
+      $scope.mapInfo = {};
 
-    console.log(AuthService.getCurrentUser());
+      $scope.markerPoints = {};
+      $scope.markerPoints.arbitrary = [getRandomFromRange(-180, 180, 5), getRandomFromRange(-180, 180, 5)];
 
-    /*$scope.products = Order.find(
-      { filter: { where: { customerId: $rootScope.currentUser.id } } },
-      function(list) { console.log($rootScope ); },
-      function(errorResponse) { /* error }
-    );*/
+      var bounds = new google.maps.LatLngBounds();
+      var geocoder = new google.maps.Geocoder();
+
+      $scope.$watch('customer', function (newval, oldval) {
+        if (newval) {
+          newval.$promise.then(function() {
+            var customerCombinedAddress = "1492 Sherwood Way, Eagan MN 55122" ;
+            geocoder.geocode( { "address": customerCombinedAddress}, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK && results.length > 0) {
+                    var location = results[0].geometry.location;
+                    $scope.markerPoints.customer = location;
+                }
+            });
+
+            Order.find(
+              { 
+                filter: { 
+                  where: { 
+                    customerId: $scope.customer.id 
+                  } 
+                } 
+              },
+              function(list) { 
+                  $scope.order = list[list.length - 1];
+              },
+              function(errorResponse) { 
+                /* error */
+              }
+            );
+          });
+        }
+      });
+
+      function getRandomFromRange(from, to, decimals) {
+        return (Math.random() * (to - from) + from).toFixed(decimals) * 1;
+      }
 
   }]);

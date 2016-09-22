@@ -7,15 +7,15 @@
         <div class="row">
           <div class="col-md-6">
             <label>Email</label>
-            <input type="text" ng-model="user.email">
+            <input type="text" ng-required="true" ng-model="user.email">
           </div>
           <div class="col-md-3">
             <label>Password</label>
-            <input type="password" ng-model="user.password">
+            <input type="password" ng-required="true" ng-model="user.password">
           </div>
           <div class="col-md-3">
             <label>Confirm Password</label>
-            <input type="password" ng-model="user.confirmPassword">
+            <input type="password" ng-required="true" ng-model="user.confirmPassword">
           </div>
         </div>
         <div class="row">
@@ -54,15 +54,17 @@
         </div>
         <div class="date-section">
           <p class="input-group">
-            <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
-            <span class="input-group-btn">
-              <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+            <span class="input-group-btn cal-button-container">
+              <button type="button" class="btn btn-default cal-button-open" ng-click="openCal()">
+                <input type="text" class="form-control cal-input" uib-datepicker-popup="{{format}}" ng-model="dt" ng-readonly="true" is-open="popupCal.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                <i class="glyphicon glyphicon-chevron-down"></i>
+              </button>
             </span>
           </p>
         </div>
         <div class="actions">
           <label></label>
-          <button>Place order</button>
+          <button class="submit-button">Place order</button>
         </div>
       </form>
     </div>

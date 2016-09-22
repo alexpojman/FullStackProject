@@ -58,6 +58,8 @@ angular
     return {
       login: login,
       logout: logout,
-      register: register
+      register: register,
+      isAuthenticated: isAuthenticated,
+      getCurrentCustomer: getCurrentCustomer
     };
   }]);

@@ -77,6 +77,7 @@ angular
       };
 
       $scope.dateOptions = {
+        dateDisabled: disabled,
         formatYear: 'yy',
         maxDate: new Date(2020, 5, 22),
         minDate: new Date(),
@@ -90,6 +91,16 @@ angular
 
       $scope.toggleMin();
 
+      function disabled(data) {
+        var date = data.date,
+          mode = data.mode;
+        return mode === 'day' && (date < Date.now());
+      }
+
+      $scope.popupCal = {
+        opened: false
+      };
+
       $scope.openCal = function() {
         $scope.popupCal.opened = true;
       };
@@ -101,9 +112,7 @@ angular
       $scope.format = 'MM/dd/yyyy';
       $scope.altInputFormats = ['M!/d!/yyyy'];
 
-      $scope.popupCal = {
-        opened: false
-      };
+
 
       var tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
@@ -139,7 +148,6 @@ angular
 
         return '';
       }
-
   }])
 
   .controller('CurrentOrderController', ['$scope', 'AuthService', 'Order', '$state', 'NgMap',

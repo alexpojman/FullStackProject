@@ -53,14 +53,11 @@
           </div>
         </div>
         <div class="date-section">
-          <p class="input-group">
-            <span class="input-group-btn cal-button-container">
-              <button type="button" class="btn btn-default cal-button-open" ng-click="openCal()">
-                <input type="text" class="form-control cal-input" uib-datepicker-popup="{{format}}" ng-model="dt" ng-readonly="true" is-open="popupCal.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
-                <i class="glyphicon glyphicon-chevron-down"></i>
-              </button>
-            </span>
-          </p>
+          <div class="form-group has-feedback datepicker-container" >
+                <label>Date</label>
+                <input type="text" class="form-control cal-input" uib-datepicker-popup="{{format}}" ng-model="dt" ng-readonly="true" is-open="popupCal.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" ng-click="openCal()"/>
+                <i class="form-control-feedback glyphicon glyphicon-chevron-down"></i>      
+          </div>
         </div>
         <div class="actions">
           <label></label>

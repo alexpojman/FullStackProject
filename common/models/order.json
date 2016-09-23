@@ -17,14 +17,30 @@
       "type": "belongsTo",
       "model": "Customer",
       "foreignKey": ""
+    },
+    "business": {
+      "type": "belongsTo",
+      "model": "Customer",
+      "foreignKey": ""
     }
   },
   "acls": [
     {
-      "accessType": "*",
       "principalType": "ROLE",
-      "principalId": "$everyone",
+      "principalId": "$owner",
       "permission": "ALLOW"
+    },
+    {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "DENY"
     }
   ],
   "methods": {}

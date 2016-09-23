@@ -3,35 +3,36 @@
     <div class="inner-container">
       <h1>Place your order</h1>
       <h3>Customer Information</h3>
-      <form ng-submit="register()">
+      <form name="form" ng-submit="register()">
         <div class="row">
           <div class="col-md-6">
-            <label>Email</label>
-            <input type="text" ng-required="true" ng-model="user.email">
+            <label>Email*</label>
+            <input type="email" required ng-model="user.email">
           </div>
           <div class="col-md-3">
-            <label>Password</label>
-            <input type="password" ng-required="true" ng-model="user.password">
+            <label>Password*</label>
+            <input type="password" name="password" required ng-model="user.password">
+            <label class="error-label" ng-show="passwordError">{{errorMessages.password}}</label>
           </div>
           <div class="col-md-3">
-            <label>Confirm Password</label>
-            <input type="password" ng-required="true" ng-model="user.confirmPassword">
+            <label>Confirm Password*</label> 
+            <input type="password" required ng-model="user.confirmPassword">
           </div>
         </div>
         <div class="row">
           <div class="col-md-6">
-            <label>First Name</label>
-            <input type="text" ng-model="user.firstName">
+            <label>First Name*</label>
+            <input type="text" required ng-model="user.firstName">
           </div>
           <div class="col-md-6">
-            <label>Last Name</label>
-            <input type="text" ng-model="user.lastName">
+            <label>Last Name*</label>
+            <input type="text" required ng-model="user.lastName">
           </div>
         </div>
         <div class="row">
           <div class="col-md-8">
-            <label>Address</label>
-            <input type="text" ng-model="user.address" >
+            <label>Address*</label>
+            <input type="text" required ng-model="user.address" >
           </div>
           <div class="col-md-4">
             <label>Unit #</label>
@@ -40,16 +41,32 @@
         </div>
         <div class="row">
           <div class="col-md-6">
-            <label>City</label>
-            <input type="text" ng-model="user.city" >
+            <label>City*</label>
+            <input type="text" required ng-model="user.city" >
           </div>
           <div class="col-md-2">
-            <label>State</label>
-            <input type="text" ng-model="user.state" >
+            <label>State*</label>
+            <!--<input type="text" ng-model="user.state" >-->
+            <div class="dropdown" uib-dropdown>
+                <button required class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuState" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" uib-dropdown-toggle>{{user.state || 'XX'}}
+                  <span class="dropdown-indicator"><i class="glyphicon glyphicon-chevron-down"></i></span>
+                </button>
+                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="dropdownMenuState">
+                    <li ng-repeat="state in states">
+                      <a ng-click="stateDropboxItemSelected(state)">{{state}}</a>
+                    </li>
+                </ul>
+            </div>
           </div>
           <div class="col-md-4">
             <label>Zip Code</label>
             <input type="text" ng-model="user.zipcode">
+          </div>
+        </div>
+        <div class="row last-row">
+          <div class="col-md-12">
+              <label>Business Name (Ordering From)</label>
+              <input type="text" ng-model="business.name">
           </div>
         </div>
         <div class="date-section">
@@ -61,7 +78,7 @@
         </div>
         <div class="actions">
           <label></label>
-          <button class="submit-button">Place order</button>
+          <button class="submit-button">Place Order</button>
         </div>
       </form>
     </div>

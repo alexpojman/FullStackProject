@@ -2,12 +2,13 @@
   <div class="container-login">
     <h1>Welcome!</h1>
     <form ng-submit="login()">
+      <label ng-show="loginError" class="error-label">Incorrect Username/Password</label>
       <div class="text-field">
-        <label>Email</label>
-        <input type="text" ng-model="user.email" ng-required="true">
+        <label>Email*</label>
+        <input type="email" ng-model="user.email" ng-required="true">
       </div>
-      <div class="text-field">
-        <label >Password</label>
+      <div class="text-field final">
+        <label >Password*</label>
         <input type="password" ng-model="user.password" autocomplete="new-password" ng-required="true">
       </div>
       <div>

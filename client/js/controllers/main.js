@@ -5,24 +5,29 @@
 
 angular
   .module('app')
-  .controller('AuthLoginController', ['$scope', 'AuthService', '$state',
-    function($scope, AuthService, $state) {
+  .controller('AuthLoginController', ['$scope', 'AuthService', '$rootScope', '$state',
+    function($scope, AuthService, $rootScope, $state) {
       $scope.user = {
         email: '',
         password: '',
       };
-
+      
       $scope.login = function() {
         AuthService.login($scope.user.email, $scope.user.password)
         .then(function() {
-          $state.go('current-order');
+          if ($rootScope.loginSuccess == true) {
+            $scope.loginError = false;
+            $state.go('current-order');
+          } else {
+            $scope.loginError = true;
+          }
         });
       };
     }])
 
 
-  .controller('RegisterController', ['$scope', 'AuthService', 'Order', '$state',
-    function($scope, AuthService, Order, $state) {
+  .controller('RegisterController', ['$scope', 'AuthService', 'Order', 'Business', '$state',
+    function($scope, AuthService, Order, Business, $state) {
       $scope.user = {
         email: '',
         password: '',
@@ -37,8 +42,32 @@ angular
       };
 
       $scope.order = { date: '' };
+      $scope.business = { name: '' };
+
+      $scope.states = ['AK', 'AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DC', 'DE',
+                        'FL', 'GA', 'HI', 'IA', 'ID', 'IL', 'IN', 'KS', 'KY', 
+                        'LA', 'MA', 'MD', 'ME', 'MI', 'MN', 'MO', 'MS', 'MT', 
+                        'NC', 'ND', 'NE', 'NH', 'NJ', 'NM', 'NV', 'NY', 'OH', 
+                        'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 
+                        'VA', 'VT', 'WA', 'WI', 'WV', 'WY'];
+
+      $scope.errorMessages = {};
 
       $scope.register = function() {
+
+        if ($scope.user.password != $scope.user.confirmPassword) {
+          $scope.errorMessages.password = "Passwords Do Not Match";
+          $scope.passwordError = true;
+          return;
+        } else if ($scope.user.password.length < 8) {
+          $scope.errorMessages.password = "Password is < 8 Characters";
+          $scope.passwordError = true;
+          return;
+        } else {
+          $scope.errorMessages.password = "";
+          $scope.passwordError = false;
+        }
+
         AuthService.register(
           $scope.user.email, 
           $scope.user.password, 
@@ -53,10 +82,28 @@ angular
         .then(function() {
           AuthService.login($scope.user.email, $scope.user.password)
           .then(function() {
-            Order.create({ date: $scope.dt }).$promise.then(function(response) { $state.go('current-order'); });
+            Business.create(
+              { 
+                name: $scope.business.name
+              })
+              .$promise.then(function(response) 
+              { 
+                Order.create({
+                  date: $scope.dt,
+                  businessId: response.id
+                })
+                .$promise.then(function(response)
+                {
+                  $state.go('current-order'); 
+                })
+              });
           });
         });
       };
+
+      $scope.stateDropboxItemSelected = function stateDropboxItemSelected(state) {
+        $scope.user.state = state;
+      }
 
       //
       // Date Picker Functions
@@ -150,29 +197,25 @@ angular
       }
   }])
 
-  .controller('CurrentOrderController', ['$scope', 'AuthService', 'Order', '$state', 'NgMap',
-    function($scope, AuthService, Order, $state, NgMap) {
+  .controller('CurrentOrderController', ['$scope', 'AuthService', 'Order', 'Business', '$state', 'NgMap',
+    function($scope, AuthService, Order, Business, $state, NgMap) {
       $scope.customer = AuthService.getCurrentCustomer();
+      $scope.customer.isAuthenticated = AuthService.isAuthenticated();
+
+      if ($scope.customer.isAuthenticated == false) {
+        $state.go('login');
+      }
+
       $scope.order = {};
-      $scope.mapInfo = {};
 
       $scope.markerPoints = {};
-      $scope.markerPoints.arbitrary = [getRandomFromRange(-180, 180, 5), getRandomFromRange(-180, 180, 5)];
-
-      var bounds = new google.maps.LatLngBounds();
-      var geocoder = new google.maps.Geocoder();
+      $scope.markerPoints.arbitrary = [getRandomFromRange(-180, 180, 3), getRandomFromRange(-180, 180, 3)];
+      $scope.markerPoints.arbitrary.lat = $scope.markerPoints.arbitrary[0];
+      $scope.markerPoints.arbitrary.lng = $scope.markerPoints.arbitrary[1];
 
       $scope.$watch('customer', function (newval, oldval) {
         if (newval) {
           newval.$promise.then(function() {
-            var customerCombinedAddress = "1492 Sherwood Way, Eagan MN 55122" ;
-            geocoder.geocode( { "address": customerCombinedAddress}, function(results, status) {
-                if (status == google.maps.GeocoderStatus.OK && results.length > 0) {
-                    var location = results[0].geometry.location;
-                    $scope.markerPoints.customer = location;
-                }
-            });
-
             Order.find(
               { 
                 filter: { 
@@ -181,11 +224,26 @@ angular
                   } 
                 } 
               },
-              function(list) { 
+              function(list) {
+                  // Take the most recent order
                   $scope.order = list[list.length - 1];
               },
               function(errorResponse) { 
-                /* error */
+                console.log(errorResponse);
+              }
+            );
+
+            Business.find(
+              {
+                filter: {
+                  where: {
+                    id: $scope.order.businessId
+                  }
+                }
+              },
+              function(list) {
+                // This should only be one business anyways
+                $scope.business = list[list.length - 1];
               }
             );
           });

@@ -4,11 +4,15 @@
             <h1>Current Order</h1>
             <div class="order-info-container">
                 <h2>Order {{order.id}} for {{customer.firstName}} {{customer.lastName}}</h2>
-                <h3>Address: {{customer.address}} {{customer.unitNum}}, {{customer.city}}, {{customer.state}} {{customer.zipcode}}</h3>
-                <ng-map center="{{location}}" zoom=15>
-                    <marker position=“{{markerPoints.arbitrary.lat}}” />
-                    <marker position=“[{{markerPoints.customer.lat}},{{markerPoints.customer.lng}}]” />
-                </ng-map>
+                <h4>Selected Date: {{order.date | date:'MM/dd/yyyy'}}
+                <h4>Business: {{business.name}}</h4>
+                <h4>Address: {{customer.address}} {{customer.unitNum}}, {{customer.city}}, {{customer.state}} {{customer.zipcode}}</h4>
+                <div class="map-container" >
+                    <ng-map id="mainMap" center="" zoom-to-include-markers="true">
+                        <marker position=“{{markerPoints.arbitrary.lat}}, {{markerPoints.arbitrary.lng}}” />
+                        <marker position=“{{customer.address}} {{customer.unitNum}}, {{customer.city}}, {{customer.state}} {{customer.zipcode}}" />
+                    </ng-map>
+                </div>
             </div>
         </div>
     </div>

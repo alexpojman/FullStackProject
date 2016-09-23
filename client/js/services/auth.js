@@ -12,11 +12,16 @@ angular
         .login({email: email, password: password})
         .$promise
         .then(function(response) {
+          $rootScope.loginSuccess = true;
+          // Success
           $rootScope.currentUser = {
             id: response.user.id,
             tokenId: response.id,
             email: email
           };
+        }, function() {
+          // Failure
+          $rootScope.loginSuccess = false;
         });
     }
 

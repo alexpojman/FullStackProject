@@ -1,31 +1,30 @@
 {
   "ids": {
     "User": 1,
-    "AccessToken": 3,
+    "AccessToken": 2,
     "ACL": 1,
     "RoleMapping": 1,
     "Role": 1,
-    "Customer": 3,
-    "Order": 3,
-    "Business": 1
+    "Customer": 2,
+    "Order": 2,
+    "Business": 2
   },
   "models": {
     "User": {},
     "AccessToken": {
-      "Ihof7yPb8zYnBvw4slDWe9ZRGmpTUjuDrmgcqvfl11czlDCymcZUhLhjnM62N9gl": "{\"id\":\"Ihof7yPb8zYnBvw4slDWe9ZRGmpTUjuDrmgcqvfl11czlDCymcZUhLhjnM62N9gl\",\"ttl\":1209600,\"created\":\"2016-09-22T02:05:22.418Z\",\"userId\":1}",
-      "JGX06Da2eCTsJ7xe452cwKZoG4cYRgeq7CCQqPEbgu0fdhMxaPvmTmManFWzBSS5": "{\"id\":\"JGX06Da2eCTsJ7xe452cwKZoG4cYRgeq7CCQqPEbgu0fdhMxaPvmTmManFWzBSS5\",\"ttl\":1209600,\"created\":\"2016-09-22T02:08:58.548Z\",\"userId\":2}"
+      "zxIQO32jiJXgRDzxhtiYDr57CJh3SmynIaq129lP5BWbWHaYfRlzI5o7uwCRBcZu": "{\"id\":\"zxIQO32jiJXgRDzxhtiYDr57CJh3SmynIaq129lP5BWbWHaYfRlzI5o7uwCRBcZu\",\"ttl\":1209600,\"created\":\"2016-09-23T03:10:42.671Z\",\"userId\":1}"
     },
     "ACL": {},
     "RoleMapping": {},
     "Role": {},
     "Customer": {
-      "1": "{\"firstName\":\"Alex\",\"lastName\":\"Pojman\",\"address\":\"asdf\",\"unitNum\":\"sadf\",\"city\":\"asdf\",\"state\":\"asd\",\"zipcode\":null,\"password\":\"$2a$10$QJPwOoEMIMZrx559ZyRj9.s7f4jL0b/k7LJBKZYZbEdjIppgkUUiy\",\"email\":\"ya@ya.com\",\"id\":1}",
-      "2": "{\"firstName\":\"asdf\",\"lastName\":\"asdf\",\"address\":\"asdf\",\"unitNum\":\"asdf\",\"city\":\"asdf\",\"state\":\"asdf\",\"zipcode\":null,\"password\":\"$2a$10$HdODK/nLs0L54pdP9br5L.bNB3i4SkU9QZrtvLRXPKSYb9jaXwy/.\",\"email\":\"tot@tot.com\",\"id\":2}"
+      "1": "{\"firstName\":\"Alex\",\"lastName\":\"Pojo\",\"address\":\"1492 Sheroood Way\",\"unitNum\":\"\",\"city\":\"Eagan\",\"state\":\"MN\",\"zipcode\":55122,\"password\":\"$2a$10$fkfqScwJEKaQ.hyl2mCwR.u8Itp3RTHPnl.HEsgf8O2k8NPrZm4vm\",\"email\":\"pojo@stewie.com\",\"id\":1}"
     },
     "Order": {
-      "1": "{\"date\":\"2016-10-23T02:04:31.806Z\",\"customerId\":1,\"id\":1}",
-      "2": "{\"date\":\"2016-09-25T02:08:25.505Z\",\"customerId\":2,\"id\":2}"
+      "1": "{\"date\":\"2016-10-10T03:10:02.959Z\",\"customerId\":1,\"businessId\":1,\"id\":1}"
     },
-    "Business": {}
+    "Business": {
+      "1": "{\"name\":\"Vidya Games\",\"id\":1}"
+    }
   }
 }
